@@ -1,0 +1,53 @@
+<div class="panel-default">
+  <spinner number="-1"></spinner>
+  <div class="panel-heading">
+    <p class="login-panel-heading">Create Event</p>
+  </div>
+
+  <div class="panel-body" id="session-new">
+    <div class="alert alert-danger" role="alert" ng-repeat="(key, field) in errorMessages">
+      <p class="text-capitalize">{{ key }}:</p>
+      <ul ng-repeat="message in field">
+        <li class="text-capitalize">{{ message }}.</li>
+      </ul>
+    </div>
+
+    <form id="create">
+      <div class="form-group field">
+        <label for="event_Description of event">Description of event ({{160 - event.description.length}} <span ng-if="event.description.length != 159">characters</span><span ng-if="event.description.length == 159">character</span> left)</label><br>
+        <textarea ng-model="event.description" my-maxlength="160" ng-class="{'red-border': errorMessages.description.length > 0}" class="form-control form-text-area" name="event[description]" id="event_description"></textarea>
+      </div>
+
+      <div class="form-group field">
+        <label for="event_Time you are going to wait for coffee buddies">Time you are going to wait for coffee buddies</label><br>
+        <select ng-init="event.time_length" ng-model="event.time_length" ng-options="option.value as option.name for option in options" class="form-control"></select>
+      </div>
+
+      <label for="event_Number of people you want to drink coffee with">Number of people you want to drink coffee with</label>
+
+      <div class="btn-group radio-buttons-wrapper">
+        <label ng-class="{'active, people-button-active': event.people_amount == 2}" class="btn radio-buttons-label people-button button-extra-padding">
+          <input ng-init="event.people_amount"  type="radio" ng-model="event.people_amount" ng-value="2" ng-checked="true" class="angular-radio">
+          <people-icons amount="1"></people-icons>
+        </label>
+        <label ng-class="{'active, people-button-active': event.people_amount == 3}" class="btn radio-buttons-label people-button button-extra-padding">
+          <input type="radio" ng-model="event.people_amount" ng-value="3" class="angular-radio">
+          <people-icons amount="2"></people-icons>
+        </label>
+        <label ng-class="{'active, people-button-active': event.people_amount == 4}" class="btn radio-buttons-label people-button button-extra-padding">
+          <input type="radio" ng-model="event.people_amount" ng-value="4" class="angular-radio">
+          <people-icons amount="3"></people-icons>
+        </label>
+        <label ng-class="{'active, people-button-active': event.people_amount == 5}" class="btn radio-buttons-label people-button button-extra-padding">
+          <input type="radio" ng-model="event.people_amount" ng-value="5" class="angular-radio">
+          <people-icons amount="4"></people-icons>
+        </label>
+      </div>
+
+      <div class="form-group field">
+        <button class="btn btn-primary" ng-click="createEvent()" id="create-event">Create Event</button>
+        <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>

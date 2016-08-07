@@ -1,0 +1,14 @@
+<p>Hi,</p>
+
+<p><%= @event.owner %> has created new event!</p>
+
+<p>If you wish to drink coffee in good companionship join his event at:
+<% if Rails.env.development? || Rails.env.test? %>
+      <%= link_to 'Coffee', event_url(@event, protocol: "http") %></p>
+<% elsif Rails.env.production? %>
+      <%= link_to 'Coffee', root_url(protocol: "https") + ENV["PRODUCTION_BASE_PATH"][1..-2] + event_path(@event) %></p>
+<% end %>
+
+<p>If you wish to subscribe or unsubscribe from newsletter click on button located in Coffee Club application footer.</p>
+
+<p>Cofee Club Team</p>

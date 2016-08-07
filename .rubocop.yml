@@ -1,0 +1,50 @@
+AllCops:
+  Include:
+    - '**/Rakefile'
+    - '**/config.ru'
+  Exclude:
+    - 'db/**/*'
+    - 'config/**/*'
+    - 'script/**/*'
+    - !ruby/regexp /old_and_unused\.rb$/
+LineLength:
+  Enabled: true
+  Max: 250
+
+ClassLength:
+  Enabled: true
+  Max: 150
+
+MethodLength:
+  Enabled: true
+  Max: 150
+
+Blocks:
+  Enabled: false
+
+Documentation:
+  Enabled: false
+
+IndentHash:
+  Enabled: false
+
+StringLiterals:
+  Enabled: false
+
+Encoding:
+  Enabled: false
+
+RedundantSelf:
+  Enabled: false
+
+Style/SignalException:
+  Enabled: false
+
+Style/RaiseArgs:
+  Enabled: false
+
+Metrics/AbcSize:
+  Enabled: false
+
+Style/UnneededPercentQ:
+  Enabled: false

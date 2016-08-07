@@ -1,0 +1,68 @@
+<div ng-controller="HomeController" id="home-wrapper" class="inner-page-wrapper">
+  <div class="row">
+    <div ng-if="openEvents.length == 0" class="text-center no-events-wrapper">
+      <h3 class="no-events-heading">There are no open events.</h3>
+      <h3 class="no-events-heading">Go ahead and create one yourself!</h3>
+      <button ng-controller="ModalController" ng-click="open()" class="btn btn-success no-events-button">Create Event</button>
+    </div>
+    <div ng-repeat="event in openEvents">
+      <div class="col-lg-4 col-md-6 col-sm-12">
+        <div ng-class="{'muted-text': event.is_disabled}" class="panel panel-default home-panel-wrapper">
+          <spinner number="event.id"></spinner>
+          <div ng-class="{'green-heading': event.current_user_member_of_event && event.status == 'open', 'orange-heading': event.current_user_owner_of_event && event.status == 'open', 'brown-heading': event.status == 'closed', 'black-heading': event.status == 'done', 'muted-element': event.is_disabled}" class="panel-heading">
+            <p class="home-panel-title">
+              <span class="event-title-owner">{{ event.owner }}</span>
+              <span ng-class="{'white-color': event.current_user_member_of_event, 'red-color': event.is_disabled}" class="pull-right home-panel-status">{{ event.status }}</span></p>
+          </div>
+          <div ng-class="{'muted-panel': event.is_disabled}" class="panel-body">
+            <p ng-class="{'muted-element': event.is_disabled}" class="home-text-size one-line-text break-text">
+              <span class="one-line-text-span" title="{{event.description}}" data-toggle="tooltip" data-placement="top" tooltip>{{ event.description }}</span>
+            </p>
+            <div class="event-buttons-wrapper">
+              <a ng-if="!event.is_disabled" ng-href="{{event.path}}" class="btn btn-outline btn-primary">Show</a>
+              <button ng-if="event.is_disabled" ng-disabled="{{event.is_disabled}}" ng-class="{'muted-button': event.is_disabled}" class="btn btn-outline buttons-inline-block">Show</button>
+              <div class="pull-right">
+                <button ng-if="event.can_join" ng-click="joinEvent(event)" ng-class="{'muted-button': event.is_disabled}" id="join-event" class="btn btn-outline btn-success buttons-inline-block"><i class="fa fa-plus"></i></button>
+                <button ng-if="event.can_leave"  ng-click="leaveEvent(event)" ng-class="{'muted-button': event.is_disabled}" id="leave-event" class="btn btn-outline btn-danger buttons-inline-block"><i class="fa fa-times"></i></button>
+                <button ng-if="event.can_confirm" ng-click="confirmEvent(event)" ng-class="{'muted-button': event.is_disabled}" id="confirm-event" class="btn btn-outline btn-success buttons-inline-block"><i class="fa fa-check"></i></button>
+                <button ng-if="event.can_complete"  ng-click="completeEvent(event)" class="btn btn-outline btn-warning buttons-inline-block" id="complete-event"><i class="fa fa-check"></i></button>
+
+                <div ng-class="{'muted-button': event.is_disabled}" class="btn button-no-pointer people-button">
+                  <span ng-if="event.current_user_member_of_event">
+                      <i class="fa fa-user person-icon-size orange-color"></i>
+                  </span>
+                  <span ng-if="(!event.current_user_member_of_event) && (event.participations_count > 0)">
+                      <i class="fa fa-user person-icon-size black-icon"></i>
+                  </span>
+                  <span ng-repeat="i in getNumber(event.participations_count-1) track by $index">
+                      <i class="fa fa-user person-icon-size black-icon"></i>
+                  </span>
+                  <span ng-repeat="i in getNumber(event.participants_left) track by $index">
+                        <i class="fa fa-user person-icon-size white-color"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div ng-if="event.timer_active" id="timer" ng-class="{'muted-element': event.is_disabled}">
+              <timer countdown="event.remaining_time" interval="1000" finish-callback="expireEvent(event)">
+                <div class="remaining-time-counter progress progress-striped active {{displayProgressActive}}"style="height: 30px;">
+                  <span ng-class="{'red-color': countdown <= 60 && countdown % 2 == 0}">Remaining time : {{ countdown | SecondsToMinutes }}</span>
+                </div>
+              </timer>
+            </div>
+            <div ng-if="!event.timer_active && event.can_extend" class="extend-buttons-wrapper">
+              <span class="extend-event-text">Extend for: </span>
+              <select ng-if="event.can_extend" ng-init="event.time_length = options[3].value" ng-model="event.time_length" ng-options="option.value as option.name for option in options" class="form-control buttons-inline-block select-extend-time"></select>
+              <button ng-if="event.can_extend" ng-click="extendEvent(event, 'expired')" id="extend-event" class="btn btn-outline btn-success buttons-inline-block"><i class="fa fa-clock-o"></i></button>
+            </div>
+            <div ng-if="!event.timer_active && !event.can_extend">
+              <timer>
+                <div class="remaining-time-counter progress progress-striped active {{displayProgressActive}}"style="height: 30px;"><span class="red-color">Remaining time : 0:00:00</span></div>
+              </timer>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

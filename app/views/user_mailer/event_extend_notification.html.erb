@@ -1,0 +1,13 @@
+<p>Hi,</p>
+
+<p>Event created by <%= @event.owner %> in which you have participated has been extended</p>
+
+<p>Event participants were:</p>
+
+<ul>
+<% @users_emails.each do |user_mail| %>
+    <li><%=user_mail%></li>
+<% end %>
+</ul>
+
+<p>Coffee Club Team</p>

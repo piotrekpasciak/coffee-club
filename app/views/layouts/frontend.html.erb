@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CoffeeClub</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => false %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => false %>
+  <%= csrf_meta_tags %>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+</head>
+
+<body ng-app="ccApp" ng-cloak>
+
+<base href="/" />
+
+<toaster-container
+toaster-options="{'time-out': 3000,
+                'position-class': 'toast-top-right','close-button':true}"></toaster-container>
+<achievement></achievement>
+
+<div class="page-main-wrapper">
+
+  <% flash.each do |type, message| %>
+      <div class="alert <%= bootstrap_class_for(type) %> fade in">
+        <button class="close" data-dismiss="alert">×</button>
+        <%= message %>
+      </div>
+  <% end %>
+
+
+  <div class="page-wrapper">
+    <nav class="navbar navbar-default navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <div class="logo-and-text-wrapper">
+            <%= link_to image_tag("coffee.png", alt: "Logo Image", class: "logo-image" ), root_path, class: "navbar-brand", method: :get %>
+            <p class="pull-left navigation-logged-info"><span class="beige-color">Logged in as </span><strong class="orange-color"><%= current_user.email %></strong></p>
+          </div>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navigation-archon navigation-list">
+            <% if user_signed_in? %>
+                <li><%= link_to "HOME", root_path, method: :get %></li>
+                <li><%= link_to "HALL OF FAME", ranking_path  %></li>
+
+                <li ng-controller="ModalController" ng-click="open()"><a href="">CREATE EVENT</a></li>
+
+                <li><%= link_to "MY EVENTS", my_events_path  %></li>
+                <li><%= link_to "LOGOUT", destroy_user_session_path, method: :delete, :class => ''  %> </li>
+            <% else %>
+                <li><a href="#" class="">HOME</a></li>
+                <li><%= link_to "LOGIN", new_user_session_path, :class => ''  %></li>
+                <li><%= link_to "SIGN UP", new_user_registration_path, :class => '' %></li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container-fluid content-wrapper">
+      <%= yield %>
+    </div>
+    <footer id="footer" ng-controller="FooterController" class="footer">
+      <div class="footer-text">
+        <button ng-if="!current_user.newsletter && !current_user.temporary_newsletter" ng-click="updateSubscription()" class="btn btn-primary subscribe-button"><i class="fa fa-envelope-o mail-icon"></i> Subscribe</button>
+        <span ng-if="!current_user.newsletter && !current_user.temporary_newsletter"> to newsletter.</span>
+        <button ng-if="current_user.newsletter || current_user.temporary_newsletter" ng-click="updateSubscription()" class="btn btn-warning subscribe-button"><i class="fa fa-envelope mail-icon"></i> Unsubscribe</button>
+        <span ng-if="current_user.newsletter"> from newsletter.</span>
+        <span ng-if="!current_user.newsletter && current_user.temporary_newsletter"> from temporary newsletter.</span>
+        <p class="pull-right inline-block-class footer-text-center">You have drunk <span class="orange-color">{{coffeeStats.user_coffee_count}}</span> of <span class="orange-color">{{coffeeStats.app_coffees}}</span> coffees.</p>
+      </div>
+    </footer>
+  </div>
+</div>
+</body>
+</html>

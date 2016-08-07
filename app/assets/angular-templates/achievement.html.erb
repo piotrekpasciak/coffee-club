@@ -1,0 +1,13 @@
+<div class="achievement-wrapper">
+    <div ng-if="visible" ng-repeat="achievement in achievements" ng-click="removeAchievement(achievement)" id="achievement" class="achievement fade">
+      <div class="one-achievement">
+          <div class="inline-block-class">
+            <img ng-src="{{achievement.image_path}}" class="achievement-image" alt="Achievement Image">
+          </div>
+          <div class="achievement-text-wrapper inline-block-class">
+              <p class="achievement-title">{{achievement.name}}</p>
+              <p class="achievement-text">{{achievement.text}}</p>
+          </div>
+      </div>
+    </div>
+</div>

@@ -1,0 +1,65 @@
+<div ng-controller="RankingController" id="ranking-wrapper" class="inner-page-wrapper">
+    <div class="row">
+      <div class="col-lg-6 col-md-12 col-sm-12">
+        <h2 class="ranking-header">Top Coffee Addicts</h2>
+        <div id="coffee-addicts-table">
+          <div class="panel panel-default ranking-box-wrapper">
+            <div class="panel-heading ranking-box">
+              <div class="ranking-rank-column">Rank</div>
+              <div class="ranking-column text-center">Name</div>
+              <div class="ranking-rank-column">Score</div>
+            </div>
+            <div ng-repeat="addict in addicts" class="panel-body ranking-box">
+              <div ng-if="$index == 0" class="ranking-rank-column text-center"><span class="first-place-trophy"><i class="fa fa-trophy"></i></span></div>
+              <div ng-if="$index == 0" class="ranking-column middle-height-cell break-text" valign="middle"><span class="first-place-text">{{addict.email}}</span></div>
+              <div ng-if="$index == 0" class="ranking-rank-column middle-height-cell text-center"><span class="first-place-text">{{addict.coffee_counter}}</span></div>
+
+
+              <div ng-if="$index == 1" class="ranking-rank-column text-center"><span class="second-place-trophy"><i class="fa fa-trophy"></i></span></div>
+              <div ng-if="$index == 1" class="ranking-column middle-height-cell break-text" valign="middle"><span class="second-place-text">{{addict.email}}</span></div>
+              <div ng-if="$index == 1" class="ranking-rank-column middle-height-cell text-center"><span class="second-place-text">{{addict.coffee_counter}}</span></div>
+
+
+              <div ng-if="$index == 2" class="ranking-rank-column text-center"><span class="third-place-trophy"><i class="fa fa-trophy"></i></span></div>
+              <div ng-if="$index == 2" class="ranking-column middle-height-cell break-text"><span class="third-place-text">{{addict.email}}</span></div>
+              <div ng-if="$index == 2" class="ranking-rank-column middle-height-cell text-center"><span class="third-place-text">{{addict.coffee_counter}}</span></div>
+
+              <div ng-if="$index >= 3" class="ranking-rank-column text-center"><span>{{$index + 1}}</span></div>
+              <div ng-if="$index >= 3" class="ranking-column middle-height-cell break-text">{{addict.email}}</div>
+              <div ng-if="$index >= 3" class="ranking-rank-column middle-height-cell text-center">{{addict.coffee_counter}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6 col-md-12 col-sm-12">
+        <h2 class="ranking-header">Top Event Creators</h2>
+        <div id="coffee-creators-table">
+          <div class="panel panel-default ranking-box-wrapper">
+            <div class="panel-heading ranking-box">
+              <div class="ranking-rank-column">Rank</div>
+              <div class="ranking-column text-center">Name</div>
+              <div class="ranking-rank-column">Score</div>
+            </div>
+            <div ng-repeat="manager in managers" class="panel-body ranking-box">
+              <div ng-if="$index == 0" class="ranking-rank-column text-center"><span class="first-place-trophy"><i class="fa fa-trophy"></i></span></div>
+              <div ng-if="$index == 0" class="ranking-column middle-height-cell break-text" valign="middle"><span class="first-place-text">{{manager.email}}</span></div>
+              <div ng-if="$index == 0" class="ranking-rank-column middle-height-cell text-center"><span class="first-place-text">{{manager.count}}</span></div>
+
+              <div ng-if="$index == 1" class="ranking-rank-column text-center"><span class="second-place-trophy"><i class="fa fa-trophy"></i></span></div>
+              <div ng-if="$index == 1" class="ranking-column middle-height-cell break-text" valign="middle"><span class="second-place-text">{{manager.email}}</span></div>
+              <div ng-if="$index == 1" class="ranking-rank-column middle-height-cell text-center"><span class="second-place-text">{{manager.count}}</span></div>
+
+              <div ng-if="$index == 2" class="ranking-rank-column text-center"><span class="third-place-trophy"><i class="fa fa-trophy"></i></span></div>
+              <div ng-if="$index == 2" class="ranking-column middle-height-cell break-text"><span class="third-place-text">{{manager.email}}</span></div>
+              <div ng-if="$index == 2" class="ranking-rank-column middle-height-cell text-center"><span class="third-place-text">{{manager.count}}</span></div>
+
+              <div ng-if="$index >= 3" class="ranking-rank-column text-center">{{$index + 1}}</div>
+              <div ng-if="$index >= 3" class="ranking-column middle-height-cell break-text">{{manager.email}}</div>
+              <div ng-if="$index >= 3" class="ranking-rank-column middle-height-cell ranking-rank-cell text-center">{{manager.count}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>

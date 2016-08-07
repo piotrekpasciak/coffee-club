@@ -1,0 +1,103 @@
+<div ng-controller="ShowController" class="container-fluid event-container">
+  <div class="show-page-wrapper">
+      <div class="col-lg-6 col-md-6 col-sm-12 show-page-event-wrapper">
+        <div ng-class="{'muted-text': event.is_disabled}" class="panel panel-default home-panel-wrapper">
+          <spinner number="event.id"></spinner>
+          <div ng-class="{'green-heading': event.current_user_member_of_event && event.status == 'open', 'orange-heading': event.current_user_owner_of_event && event.status == 'open', 'brown-heading': event.status == 'closed', 'black-heading': event.status == 'done', 'muted-element': event.is_disabled}" class="panel-heading">
+            <p class="home-panel-title">
+              <span class="event-title-owner">{{ event.owner }}</span>
+              <span ng-class="{'white-color': event.white_status, 'red-color': event.is_disabled}" class="pull-right home-panel-status">{{ event.status }}</span></p>
+          </div>
+          <div ng-class="{'muted-panel': event.is_disabled}" class="panel-body">
+            <p ng-class="{'muted-element': event.is_disabled}" class="break-text home-text-size">
+              <span title="{{event.description}}">{{ event.description }}</span>
+            </p>
+            <div class="event-buttons-wrapper">
+              <div class="pull-right">
+                <button ng-if="event.can_join" ng-click="joinEvent(event)" ng-class="{'muted-button': event.is_disabled}" id="join-event" class="btn btn-outline btn-success buttons-inline-block"><i class="fa fa-plus"></i></button>
+                <button ng-if="event.can_leave"  ng-click="leaveEvent(event)" ng-class="{'muted-button': event.is_disabled}" id="leave-event" class="btn btn-outline btn-danger buttons-inline-block"><i class="fa fa-times"></i></button>
+                <button ng-if="event.can_confirm" ng-click="confirmEvent(event)" ng-class="{'muted-button': event.is_disabled}" id="confirm-event" class="btn btn-outline btn-success buttons-inline-block"><i class="fa fa-check"></i></button>
+                <button ng-if="event.can_complete"  ng-click="completeEvent(event)" class="btn btn-outline btn-warning buttons-inline-block" id="complete-event"><i class="fa fa-check"></i></button>
+                <select ng-if="event.can_extend" ng-init="event.time_length = options[3].value" ng-model="event.time_length" ng-options="option.value as option.name for option in options" class="form-control buttons-inline-block select-extend-time"></select>
+                <button ng-if="event.can_extend" ng-click="extendEvent(event)" id="extend-event" class="btn btn-outline btn-success buttons-inline-block"><i class="fa fa-clock-o"></i></button>
+
+                <div ng-class="{'muted-button': event.is_disabled}" class="btn button-no-pointer people-button">
+                      <span ng-if="event.current_user_member_of_event">
+                          <i class="fa fa-user person-icon-size orange-color"></i>
+                      </span>
+                      <span ng-if="(!event.current_user_member_of_event) && (event.participations_count > 0)">
+                          <i class="fa fa-user person-icon-size black-icon"></i>
+                      </span>
+                      <span ng-repeat="i in getNumber(event.participations_count-1) track by $index">
+                          <i class="fa fa-user person-icon-size black-icon"></i>
+                      </span>
+                      <span ng-repeat="i in getNumber(event.participants_left) track by $index">
+                            <i class="fa fa-user person-icon-size white-color"></i>
+                      </span>
+                </div>
+              </div>
+            </div>
+            <div ng-if="event.timer_active" id="timer" ng-class="{'muted-element': event.is_disabled}">
+              <timer countdown="event.remaining_time" interval="1000" finish-callback="expireEvent(event)">
+                <div class="remaining-time-counter progress progress-striped active {{displayProgressActive}}"style="height: 30px;"><span ng-class="{'red-color': countdown <= 60 && countdown % 2 == 0}">Remaining time : {{ countdown | SecondsToMinutes }}</span></div>
+              </timer>
+            </div>
+            <div ng-if="!event.timer_active" ng-class="{'muted-element': event.is_disabled}">
+              <timer>
+                <div class="remaining-time-counter progress progress-striped active {{displayProgressActive}}"style="height: 30px;"><span class="red-color">Remaining time : 0:00:00</span></div>
+              </timer>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+
+          <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="panel panel-default ranking-box-wrapper">
+              <div class="panel-heading ranking-box">
+                <div class="ranking-column">Participants of this event:</div>
+              </div>
+
+              <div ng-repeat="participant in event.participations" class="panel-body ranking-box" >
+                <div class="ranking-column">{{ participant.user }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    <div class="col-lg-6 col-md-6 col-sm-12">
+      <div ng-if="event.status == 'done'">
+        <div id="comment" class="show-page-wrapper">
+            <h2 class="show-page-header">Add comment:</h2>
+            <div id="session-new">
+              <div ng-if="errorMessage" class="alert alert-danger" role="alert">{{errorMessage}}</div>
+              <form id="create">
+                <div class="form-group field">
+                  <label for="Comment of event">Text of comment ({{400 - comment.text.length}} <span ng-if="comment.text.length != 399">characters</span><span ng-if="event.description.length == 399">character</span> left):</label><br>
+                  <textarea ng-model="comment.text" my-maxlength="400" ng-class="{'red-border': errorMessage.length > 0}" class="form-control form-text-area" name="comment[text]" id="comment_text"></textarea>
+                </div>
+
+                <div class="form-group field">
+                  <button id="add-comment" class="btn btn-primary" ng-click="createComment(event)">Add comment</button>
+                </div>
+              </form>
+            </div>
+        </div>
+        <div class="show-page-wrapper">
+            <div class="blog-comment">
+              <h2>Comments:</h2>
+              <hr/>
+              <ul class="comments">
+                <li class="clearfix" ng-repeat="comment in comments">
+                  <img class="hidden" src="" class="avatar" alt="">
+                  <div class="post-comments">
+                    <p class="meta">{{ comment.created_at | date:'medium' }}<span class="orange-color"> {{ comment.user }}</span> says : </p>
+                    <p class="break-text">{{ comment.text }}</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

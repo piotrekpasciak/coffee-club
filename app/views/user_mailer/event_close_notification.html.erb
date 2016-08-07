@@ -1,0 +1,29 @@
+<p>Hi,</p>
+
+<p>Event created by <%= @event.owner %> in which you have participated has been closed.</p>
+
+<p>Event participants are:</p>
+
+<ul>
+<% @users_emails.each do |user_mail| %>
+    <li><%=user_mail%></li>
+<% end %>
+</ul>
+
+<p>You can confirm your event here:
+<% if Rails.env.development? || Rails.env.test? %>
+      <%= link_to 'Confirm', event_url(@event, protocol: "http") %></p>
+<% elsif Rails.env.production? %>
+      <%= link_to 'Confirm', root_url(protocol: "https") + ENV["PRODUCTION_BASE_PATH"][1..-2] + event_path(@event) %></p>
+<% end %>
+
+<% unless @user.newsletter %>
+    <p>Subscribe me to temporary newsletter - only until I find another coffee event for me!
+    <% if Rails.env.development? || Rails.env.test? %>
+      <%= link_to 'Temporary Newsletter', update_temporary_subscription_url(protocol: "http") %></p>
+    <% elsif Rails.env.production? %>
+      <%= link_to 'Temporary Newsletter', root_url(protocol: "https") + ENV["PRODUCTION_BASE_PATH"][1..-2] + update_temporary_subscription_path %>
+    <% end %>
+<% end %>
+
+<p>Coffee Club Team</p>

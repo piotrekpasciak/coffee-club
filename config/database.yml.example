@@ -1,0 +1,20 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+
+development:
+  <<: *default
+  database: aoo-name_development
+
+
+test:
+  <<: *default
+  database: app-name_test
+
+
+production:
+  <<: *default
+  database: app-name_production
+  username: username
+  password: password
