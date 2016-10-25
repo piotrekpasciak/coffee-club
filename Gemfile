@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 ruby '2.3.1'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 4.2.7'
+gem 'rails', '~> 4.2.7.1'
 gem 'pg', '~> 0.18.2'
 gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
@@ -14,7 +14,6 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 #Gems added for project
 gem 'devise', '~> 3.5.1'
-gem "devise_ldap_authenticatable", '~> 0.8.5'
 gem 'bower-rails', '~> 0.9.2'
 gem 'pry-rails', '~> 0.3.4'
 gem 'whenever', '~> 0.9.4', require: false
@@ -28,7 +27,7 @@ gem 'angularjs-rails-resource', '~> 2.0.0'
 gem 'angular-ui-bootstrap-rails', '~> 0.12.1'
 gem 'active_model_serializers', '~> 0.8.3'
 gem 'angular_rails_csrf', '~> 1.0.4'
-gem 'angular-rails-templates', '~> 0.2.0'
+gem 'angular-rails-templates', '~> 1.0.2'
 
 group :development do
   gem 'thin', '~> 1.6.3'
