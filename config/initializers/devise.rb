@@ -1,9 +1,4 @@
 Devise.setup do |config|
-  config.ldap_logger = true
-  config.ldap_create_user = true
-  config.ldap_auth_username_builder = Proc.new() {|attribute, login, ldap| login }
-
-
   config.mailer_sender = 'no-reply@coffee.club'
 
   require 'devise/orm/active_record'
